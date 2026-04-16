@@ -1,0 +1,4 @@
+title: Laurie Marshall
+show_downloads: true
+#comment out line by starting with hashtag
+theme: jekyll-theme-minimal
