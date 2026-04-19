@@ -201,23 +201,35 @@
 
   const fullUrl = window.location.origin + "/" + file;
 
-  container.innerHTML = `
-    <div style="padding: 10px;">
-      <p><strong>PDF Document</strong></p>
-      <p>Open in a new tab or download for best viewing.</p>
+  container.innerHTML = "<canvas id='pdfCanvas'></canvas>";
 
-      <a class="btn" href="${fullUrl}">
-      View PDF
-      </a>
+  const loadingTask = pdfjsLib.getDocument(fullUrl);
 
-      <a class="btn btn-secondary"
-         href="${fullUrl}"
-         download>
-        Download PDF
-      </a>
-    </div>
-  `;
+  loadingTask.promise.then(function(pdf) {
+
+    pdf.getPage(1).then(function(page) {
+
+      const canvas = document.getElementById('pdfCanvas');
+      const context = canvas.getContext('2d');
+
+      const viewport = page.getViewport({ scale: 1.5 });
+
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+
+      page.render({
+        canvasContext: context,
+        viewport: viewport
+      });
+
+    });
+
+  }).catch(function(error) {
+    console.error(error);
+    container.innerHTML = "<p>Failed to load PDF preview.</p>";
+  });
 }
+
 
 
 
