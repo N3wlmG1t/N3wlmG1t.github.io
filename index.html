@@ -93,8 +93,11 @@
     }
 
     canvas {
-  margin-bottom: 15px;
+  display: block;
+  margin: 0 auto 12px auto;
+  background: white;
 }
+
 
     .actions {
       margin-top: 10px;
@@ -218,15 +221,20 @@
 
       const context = canvas.getContext("2d");
 
-      const viewport = page.getViewport({ scale: 1.5 });
+      const containerWidth = container.clientWidth;
+  const viewport = page.getViewport({ scale: 1 });
 
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
+const scale = containerWidth / viewport.width;
+const scaledViewport = page.getViewport({ scale: scale });
 
-      await page.render({
-        canvasContext: context,
-        viewport: viewport
-      }).promise;
+
+      canvas.width = scaledViewport.width;
+canvas.height = scaledViewport.height;
+
+await page.render({
+  canvasContext: context,
+  viewport: scaledViewport
+}).promise;
 
     }
 
