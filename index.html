@@ -4,177 +4,49 @@
   <meta charset="UTF-8">
   <title>My Files</title>
 
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f6f8;
+      margin: 40px;
+      line-height: 1.6;
     }
 
-    .container {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 20px;
-    }
-
-    .header {
+    header {
+      border-bottom: 2px solid #ddd;
       margin-bottom: 20px;
+      padding-bottom: 10px;
     }
 
-    .header h1 {
-      margin: 0;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 320px 1fr;
-      gap: 20px;
-    }
-
-    /* LEFT LIST PANEL */
-    .doc-list {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
-      overflow: hidden;
-    }
-
-    .doc-item {
-      padding: 15px;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .doc-item:hover {
-      background: #f1f5ff;
-    }
-
-    .doc-title {
-      font-weight: bold;
-      color: #007bff;
+    h1 {
       margin-bottom: 5px;
     }
 
-    .doc-desc {
-      font-size: 13px;
+    p {
       color: #666;
-    }
-
-    /* RIGHT PREVIEW PANEL */
-    .preview {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .preview-title {
-      font-size: 18px;
-      margin-bottom: 5px;
-    }
-
-    .preview-desc {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 10px;
-    }
-
-    iframe {
-      width: 100%;
-      height: 600px;
-      border: 1px solid #eee;
-      border-radius: 10px;
-    }
-
-    .actions {
-      margin-top: 10px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 8px 12px;
-      background: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-size: 13px;
-    }
-
-    .btn:hover {
-      background: #0056b3;
+      margin-top: 0;
     }
   </style>
 </head>
 
 <body>
 
-<div class="container">
+  <header>
+    <h1>My Files</h1>
+    <p>Documents and Videos</p>
+  </header>
 
-  <div class="header">
-    <h1>Writing Samples</h1>
-    <p>Click a document to preview</p>
-  </div>
+  <h2>Documents</h2>
+  <ul>
+    <li><a href="Documents/L_Marshall__Writing_Sample.pdf">Download PDF</a></li>
+  </ul>
 
-  <div class="layout">
-
-    <!-- LEFT: DOCUMENT LIST -->
-    <div class="doc-list">
-
-      <div class="doc-item"
-           onclick="loadDoc('Documents/L_Marshall__Writing_Sample.pdf',
-                            'Writing Sample',
-                            'Technical writing sample demonstrating documentation structure.')">
-        <div class="doc-title">Writing Sample</div>
-        <div class="doc-desc">Technical writing sample demonstrating documentation structure.</div>
-      </div>
-
-      <div class="doc-item"
-           onclick="loadDoc('Documents/sample2.pdf',
-                            'Sample 2',
-                            'Second writing sample with updated formatting style.')">
-        <div class="doc-title">sample2</div>
-        <div class="doc-desc">Second writing sample with updated formatting style.</div>
-      </div>
-
-      <div class="doc-item"
-           onclick="loadDoc('Documents/sample3.pdf',
-                            'Sample 3',
-                            'Example of procedural documentation and clarity improvements.')">
-        <div class="doc-title">Sample 3</div>
-        <div class="doc-desc">Example of procedural documentation and clarity improvements.</div>
-      </div>
-
-    </div>
-
-    <!-- RIGHT: PREVIEW -->
-    <div class="preview">
-
-      <div class="preview-title" id="title">Select a document</div>
-      <div class="preview-desc" id="desc">Click a file on the left to preview it here.</div>
-
-      <iframe id="viewer" src=""></iframe>
-
-      <div class="actions">
-        <a id="downloadBtn" class="btn" href="#" download>Download</a>
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-<script>
-  function loadDoc(file, title, desc) {
-    document.getElementById('viewer').src = file;
-    document.getElementById('title').innerText = title;
-    document.getElementById('desc').innerText = desc;
-    document.getElementById('downloadBtn').href = file;
-  }
-</script>
+  <h2>Videos</h2>
+  <video width="600" controls>
+    <source src="videos/VoIP_Networking_Concepts.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
 </body>
 </html>
