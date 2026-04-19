@@ -4,49 +4,208 @@
   <meta charset="UTF-8">
   <title>My Files</title>
 
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      margin: 40px;
-      line-height: 1.6;
+      background: #f4f6f8;
     }
 
-    header {
-      border-bottom: 2px solid #ddd;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 20px;
     }
 
-    h1 {
+    .header h1 {
+      margin: 0;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 20px;
+    }
+
+    /* LIST */
+    .doc-list {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    .section-label {
+      padding: 12px 15px;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: #888;
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
+    }
+
+    .doc-item {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .doc-item:hover {
+      background: #f1f5ff;
+    }
+
+    .doc-title {
+      font-weight: bold;
+      color: #007bff;
       margin-bottom: 5px;
     }
 
-    p {
+    .doc-desc {
+      font-size: 13px;
       color: #666;
-      margin-top: 0;
+    }
+
+    /* PREVIEW */
+    .preview {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+      padding: 15px;
+    }
+
+    .preview-title {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .preview-desc {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    iframe, video {
+      width: 100%;
+      height: 600px;
+      border-radius: 10px;
+      border: 1px solid #eee;
+    }
+
+    .actions {
+      margin-top: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 12px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .btn:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 
 <body>
 
-  <header>
+<div class="container">
+
+  <div class="header">
     <h1>My Files</h1>
-    <p>Documents and Videos</p>
-  </header>
+    <p>Documents and videos</p>
+  </div>
 
-  <h2>Documents</h2>
-  <ul>
-    <li><a href="Documents/L_Marshall__Writing_Sample.pdf">Download PDF</a></li>
-  </ul>
+  <div class="layout">
 
-  <h2>Videos</h2>
-  <video width="600" controls>
-    <source src="videos/VoIP_Networking_Concepts.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+    <!-- LEFT LIST -->
+    <div class="doc-list">
+
+      <div class="section-label">Documents</div>
+
+      <div class="doc-item"
+           onclick="loadDoc('pdf','Documents/L_Marshall__Writing_Sample.pdf',
+                            'Writing Sample',
+                            'Technical writing sample demonstrating documentation structure.')">
+        <div class="doc-title">Writing Sample</div>
+        <div class="doc-desc">Technical writing sample demonstrating documentation structure.</div>
+      </div>
+
+      <div class="doc-item"
+           onclick="loadDoc('pdf','Documents/sample2.pdf',
+                            'Sample 2',
+                            'Second writing sample with improved formatting.')">
+        <div class="doc-title">Sample 2</div>
+        <div class="doc-desc">Second writing sample with improved formatting.</div>
+      </div>
+
+      <div class="doc-item"
+           onclick="loadDoc('pdf','Documents/sample3.pdf',
+                            'Sample 3',
+                            'Procedural documentation example.')">
+        <div class="doc-title">Sample 3</div>
+        <div class="doc-desc">Procedural documentation example.</div>
+      </div>
+
+      <div class="section-label">Videos</div>
+
+      <div class="doc-item"
+           onclick="loadDoc('video','videos/VoIP_Networking_Concepts.mp4',
+                            'VoIP Networking Concepts',
+                            'Networking fundamentals demonstration video.')">
+        <div class="doc-title">VoIP Networking Concepts</div>
+        <div class="doc-desc">Networking fundamentals demonstration video.</div>
+      </div>
+
+    </div>
+
+    <!-- PREVIEW -->
+    <div class="preview">
+
+      <div class="preview-title" id="title">Select a file</div>
+      <div class="preview-desc" id="desc">Click a document or video to preview it here.</div>
+
+      <!-- dynamic viewer -->
+      <div id="viewerContainer"></div>
+
+      <div class="actions">
+        <a id="downloadBtn" class="btn" href="#" download>Download</a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function loadDoc(type, file, title, desc) {
+    document.getElementById('title').innerText = title;
+    document.getElementById('desc').innerText = desc;
+    document.getElementById('downloadBtn').href = file;
+
+    const container = document.getElementById('viewerContainer');
+
+    if (type === 'pdf') {
+      container.innerHTML = `
+        <iframe src="${file}"></iframe>
+      `;
+    }
+
+    if (type === 'video') {
+      container.innerHTML = `
+        <video controls>
+          <source src="${file}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      `;
+    }
+  }
+</script>
 
 </body>
 </html>
