@@ -176,14 +176,14 @@
 
       <div class="preview-title" id="title">Select a file</div>
       <div class="preview-desc" id="desc">Click a document or video to preview it here.</div>
+<div class="actions">
+    <a id="downloadBtn" class="btn" href="#" download>
+      Download
+    </a>
+  </div>
 
       <!-- dynamic viewer -->
-      <div id="viewerContainer"></div>
-
-      <!-- this was adding extra download button 
-      <div class="actions">
-        <a id="downloadBtn" class="btn" href="#" download>Download</a>
-      </div> --> 
+      <div id="viewerContainer"></div> 
 
     </div>
 
@@ -200,7 +200,9 @@
   function loadDoc(type, file, title, desc) {
     document.getElementById('title').innerText = title;
     document.getElementById('desc').innerText = desc;
-    <!--  document.getElementById('downloadBtn').href = file; --> 
+    document.getElementById('downloadBtn').href =
+  window.location.origin + "/" + file;
+ 
 
     const container = document.getElementById('viewerContainer');
 
