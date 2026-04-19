@@ -191,21 +191,30 @@
     const container = document.getElementById('viewerContainer');
 
     if (type === 'pdf') {
+
+  const fullUrl = window.location.origin + "/" + file;
+
   container.innerHTML = `
     <div style="padding: 10px;">
-      <p><strong>PDF Preview</strong></p>
-      <p>This document opens in a new tab for best compatibility.</p>
+      <p><strong>PDF Document</strong></p>
+      <p>Open in a new tab or download for best viewing.</p>
 
-      <a class="btn" href="${file}" target="_blank">
+      <a class="btn"
+         href="${fullUrl}"
+         target="_blank"
+         rel="noopener noreferrer">
         View PDF
       </a>
 
-      <a class="btn btn-secondary" href="${file}" download>
+      <a class="btn btn-secondary"
+         href="${fullUrl}"
+         download>
         Download PDF
       </a>
     </div>
   `;
 }
+
 
 
     if (type === 'video') {
