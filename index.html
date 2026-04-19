@@ -177,7 +177,7 @@
       <div class="preview-title" id="title">Select a file</div>
       <div class="preview-desc" id="desc">Click a document or video to preview it here.</div>
 <div class="actions">
-    <a id="downloadBtn" class="btn" href="#" download>
+    <a id="downloadBtn" class="btn" href="#" download style="display:none;">
       Download
     </a>
   </div>
@@ -198,63 +198,67 @@
 
 <script>
   function loadDoc(type, file, title, desc) {
-    document.getElementById('title').innerText = title;
-    document.getElementById('desc').innerText = desc;
-    document.getElementById('downloadBtn').href =
-  window.location.origin + "/" + file;
- 
+  document.getElementById('title').innerText = title;
+  document.getElementById('desc').innerText = desc;
 
-    const container = document.getElementById('viewerContainer');
+  const downloadBtn = document.getElementById('downloadBtn');
+  downloadBtn.style.display = "inline-block";
+  downloadBtn.href = window.location.origin + "/" + file;
 
-    if (type === 'pdf') {
+  const container = document.getElementById('viewerContainer');
 
-  const fullUrl = window.location.origin + "/" + file;
+  if (type === 'pdf') {
 
-  container.innerHTML = "";
+    const fullUrl = window.location.origin + "/" + file;
 
-  pdfjsLib.getDocument(fullUrl).promise.then(async function(pdf) {
+    container.innerHTML = "";
 
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+    pdfjsLib.getDocument(fullUrl).promise.then(async function(pdf) {
 
-      const page = await pdf.getPage(pageNum);
+      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
 
-      const canvas = document.createElement("canvas");
-      container.appendChild(canvas);
+        const page = await pdf.getPage(pageNum);
 
-      const context = canvas.getContext("2d");
+        const canvas = document.createElement("canvas");
+        container.appendChild(canvas);
 
-      const containerWidth = container.clientWidth;
-  const viewport = page.getViewport({ scale: 1 });
+        const context = canvas.getContext("2d");
 
-const scale = containerWidth / viewport.width;
-const scaledViewport = page.getViewport({ scale: scale });
+        const containerWidth = container.clientWidth;
+        const viewport = page.getViewport({ scale: 1 });
 
+        const scale = containerWidth / viewport.width;
+        const scaledViewport = page.getViewport({ scale: scale });
 
-      canvas.width = scaledViewport.width;
-canvas.height = scaledViewport.height;
+        canvas.width = scaledViewport.width;
+        canvas.height = scaledViewport.height;
 
-await page.render({
-  canvasContext: context,
-  viewport: scaledViewport
-}).promise;
+        await page.render({
+          canvasContext: context,
+          viewport: scaledViewport
+        }).promise;
 
-    }
+      }
 
-  }).catch(function(error) {
-    console.error(error);
-    container.innerHTML = "<p>Failed to load PDF preview.</p>";
-  });
+    }).catch(function(error) {
+      console.error(error);
+      container.innerHTML = "<p>Failed to load PDF preview.</p>";
+    });
+  }
+
+  if (type === 'video') {
+    container.innerHTML = `
+      <video controls>
+        <source src="${file}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    `;
+  }
 }
 
-    if (type === 'video') {
-      container.innerHTML = `
-        <video controls>
-          <source src="${file}" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      `;
-    }
-  }
+document.getElementById('downloadBtn').style.display = "none";
+
+  
 </script>
 
 </body>
