@@ -92,6 +92,10 @@
       border: 1px solid #eee;
     }
 
+    canvas {
+  margin-bottom: 15px;
+}
+
     .actions {
       margin-top: 10px;
     }
@@ -201,37 +205,36 @@
 
   const fullUrl = window.location.origin + "/" + file;
 
-  container.innerHTML = "<canvas id='pdfCanvas'></canvas>";
+  container.innerHTML = "";
 
-  const loadingTask = pdfjsLib.getDocument(fullUrl);
+  pdfjsLib.getDocument(fullUrl).promise.then(async function(pdf) {
 
-  loadingTask.promise.then(function(pdf) {
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
 
-    pdf.getPage(1).then(function(page) {
+      const page = await pdf.getPage(pageNum);
 
-      const canvas = document.getElementById('pdfCanvas');
-      const context = canvas.getContext('2d');
+      const canvas = document.createElement("canvas");
+      container.appendChild(canvas);
+
+      const context = canvas.getContext("2d");
 
       const viewport = page.getViewport({ scale: 1.5 });
 
       canvas.width = viewport.width;
       canvas.height = viewport.height;
 
-      page.render({
+      await page.render({
         canvasContext: context,
         viewport: viewport
-      });
+      }).promise;
 
-    });
+    }
 
   }).catch(function(error) {
     console.error(error);
     container.innerHTML = "<p>Failed to load PDF preview.</p>";
   });
 }
-
-
-
 
     if (type === 'video') {
       container.innerHTML = `
