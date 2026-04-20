@@ -198,68 +198,70 @@
 
 <script>
   function loadDoc(type, file, title, desc) {
-  document.getElementById('title').innerText = title;
-  document.getElementById('desc').innerText = desc;
 
-  const downloadBtn = document.getElementById('downloadBtn');
-  downloadBtn.style.display = "inline-block";
-  downloadBtn.href = window.location.origin + "/" + file;
+    document.getElementById('title').innerText = title;
+    document.getElementById('desc').innerText = desc;
 
-  const container = document.getElementById('viewerContainer');
-
-  if (type === 'pdf') {
+    const container = document.getElementById('viewerContainer');
+    const downloadBtn = document.getElementById('downloadBtn');
 
     const fullUrl = window.location.origin + "/" + file;
 
-    container.innerHTML = "";
+    // default state: hide button
+    downloadBtn.style.display = "none";
 
-    pdfjsLib.getDocument(fullUrl).promise.then(async function(pdf) {
+    if (type === 'pdf') {
 
-      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      downloadBtn.style.display = "inline-block";
+      downloadBtn.href = fullUrl;
 
-        const page = await pdf.getPage(pageNum);
+      container.innerHTML = "";
 
-        const canvas = document.createElement("canvas");
-        container.appendChild(canvas);
+      pdfjsLib.getDocument(fullUrl).promise.then(async function(pdf) {
 
-        const context = canvas.getContext("2d");
+        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
 
-        const containerWidth = container.clientWidth;
-        const viewport = page.getViewport({ scale: 1 });
+          const page = await pdf.getPage(pageNum);
 
-        const scale = containerWidth / viewport.width;
-        const scaledViewport = page.getViewport({ scale: scale });
+          const canvas = document.createElement("canvas");
+          container.appendChild(canvas);
 
-        canvas.width = scaledViewport.width;
-        canvas.height = scaledViewport.height;
+          const context = canvas.getContext("2d");
 
-        await page.render({
-          canvasContext: context,
-          viewport: scaledViewport
-        }).promise;
+          const containerWidth = container.clientWidth;
+          const viewport = page.getViewport({ scale: 1 });
 
-      }
+          const scale = containerWidth / viewport.width;
+          const scaledViewport = page.getViewport({ scale: scale });
 
-    }).catch(function(error) {
-      console.error(error);
-      container.innerHTML = "<p>Failed to load PDF preview.</p>";
-    });
+          canvas.width = scaledViewport.width;
+          canvas.height = scaledViewport.height;
+
+          await page.render({
+            canvasContext: context,
+            viewport: scaledViewport
+          }).promise;
+
+        }
+
+      }).catch(function(error) {
+        console.error(error);
+        container.innerHTML = "<p>Failed to load PDF preview.</p>";
+      });
+    }
+
+    if (type === 'video') {
+
+      container.innerHTML = `
+        <video controls>
+          <source src="${file}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      `;
+    }
   }
-
-  if (type === 'video') {
-    container.innerHTML = `
-      <video controls>
-        <source src="${file}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    `;
-  }
-}
-
-document.getElementById('downloadBtn').style.display = "none";
-
-  
 </script>
+
 
 </body>
 </html>
