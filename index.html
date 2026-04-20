@@ -55,6 +55,14 @@
       background: #f1f5ff;
     }
 
+    .doc-item.active {
+    background: #e6f0ff;
+    border-left: 4px solid #007bff;
+}
+    .doc-item.active .doc-title {
+    color: #0056b3;
+}
+
     .doc-title {
       font-weight: bold;
       color: #007bff;
@@ -136,7 +144,7 @@
       <div class="section-label">Documents</div>
 
       <div class="doc-item"
-           onclick="loadDoc('pdf','Documents/L_Marshall__Writing_Sample.pdf',
+           onclick="loadDoc(this,'pdf','Documents/L_Marshall__Writing_Sample.pdf',
                             'Writing Sample',
                             'Technical writing sample demonstrating documentation structure.')">
         <div class="doc-title">Writing Sample</div>
@@ -144,7 +152,7 @@
       </div>
 
       <div class="doc-item"
-           onclick="loadDoc('pdf','Documents/sample2.pdf',
+           onclick="loadDoc(this,'pdf','Documents/sample2.pdf',
                             'Sample 2',
                             'Second writing sample with improved formatting.')">
         <div class="doc-title">Sample 2</div>
@@ -152,7 +160,7 @@
       </div>
 
       <div class="doc-item"
-           onclick="loadDoc('pdf','Documents/sample3.pdf',
+           onclick="loadDoc(this,'pdf','Documents/sample3.pdf',
                             'Sample 3',
                             'Procedural documentation example.')">
         <div class="doc-title">Sample 3</div>
@@ -162,7 +170,7 @@
       <div class="section-label">Videos</div>
 
       <div class="doc-item"
-           onclick="loadDoc('video','videos/VoIP_Networking_Concepts.mp4',
+           onclick="loadDoc(this,'video','videos/VoIP_Networking_Concepts.mp4',
                             'VoIP Networking Concepts',
                             'Networking fundamentals demonstration video.')">
         <div class="doc-title">VoIP Networking Concepts</div>
@@ -197,7 +205,12 @@
 </script>
 
 <script>
-  function loadDoc(type, file, title, desc) {
+  function loadDoc(element, type, file, title, desc) {
+document.querySelectorAll('.doc-item').forEach(item => {
+    item.classList.remove('active');
+  });
+
+  element.classList.add('active');
 
     document.getElementById('title').innerText = title;
     document.getElementById('desc').innerText = desc;
